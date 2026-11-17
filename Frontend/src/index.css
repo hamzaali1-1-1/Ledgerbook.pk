@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+.noto-nastaliq-urdu {
+  font-family: "Noto Nastaliq Urdu", serif;
+  font-optical-sizing: auto;
+  font-weight: 400; 
+  font-style: normal;
+  line-height: 2.2 !important; 
+}
+
+/* 1. Sirf Urdu Characters (Unicode Range) ke liye Noto Nastaliq Urdu set karein */
+@font-face {
+  font-family: 'AutoUrduFont';
+  src: local('Noto Nastaliq Urdu');
+  unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+/* 2. Poore project (body) par default font stack laga dein */
+@layer base {
+  body {
+    font-family: 'AutoUrduFont', 'Noto Nastaliq Urdu', system-ui, -apple-system, sans-serif;
+  }
+}

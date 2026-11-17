@@ -19,32 +19,31 @@ const Login = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       {/* Top Language Toggle */}
       <div
-        className="absolute top-4 right-4 flex items-center gap-1 bg-white px-3 py-1.5 rounded-full shadow-sm cursor-pointer text-sm font-medium text-emerald-800"
+        className="absolute top-4 right-4 flex items-center gap-1 bg-white hover:bg-gradient-to-t from-[#038317] to-[#03a527] px-3 py-1.5 rounded-full shadow-sm cursor-pointer text-sm font-medium text-[#038317] hover:text-white transition-all duration-300 ease-in-out"
         onClick={() => setLang(lang === 'en' ? 'ur' : 'en')}
       >
         <Globe size={16} />
-        <span>{lang === 'en' ? 'اردو / English' : 'English / اردو'}</span>
+        <span className="pl-2 pb-2">{lang === 'en' ? 'اردو / English' : 'English / اردو'}</span>
       </div>
 
       {/* Logo & Header */}
       <div className="text-center mb-6">
-        <div className="w-20 h-20 bg-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-lg border-4 border-white">
+        <div className="w-20 h-20 bg-gradient-to-t from-[#038317] to-[#03a527] rounded-full flex items-center justify-center mx-auto shadow-lg">
           <BookOpen className="text-white w-10 h-10" />
         </div>
-        <h1 className="text-2xl font-bold text-emerald-900 mt-2">LegerBook</h1>
-        <p className="text-sm text-emerald-700 font-semibold">ڈیجیٹل کھاتا • Digital Khata</p>
+        <h1 className="text-[1.5rem] font-bold text-[#038317]">LedgerBook</h1>
       </div>
 
       {/* Main Card */}
-      <div className="bg-emerald-800 w-full max-w-md rounded-3xl p-6 shadow-2xl text-white">
-        <h2 className="text-lg font-bold text-center mb-5 text-emerald-100">
-          {lang === 'en' ? 'Login to Your Account / لاگ ان کریں' : 'اپنے اکاؤنٹ میں لاگ ان کریں'}
+      <div className="bg-gradient-to-t from-[#038317] to-[#03a527] w-full max-w-md rounded-3xl p-6 shadow-2xl text-white">
+        <h2 className="text-lg font-bold text-center mb-5 text-white">
+          {lang === 'en' ? 'Login to Your Account' : 'اپنے اکاؤنٹ میں لاگ ان کریں'}
         </h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
           {/* Phone Number */}
           <div>
-            <label className="block text-xs text-emerald-200 mb-1">Mobile Number / موبائل نمبر</label>
+            <label className="block text-xs text-white/90 mb-2">Mobile Number / موبائل نمبر</label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                 <Phone size={18} />
@@ -62,7 +61,7 @@ const Login = () => {
 
           {/* 4-Digit PIN */}
           <div>
-            <label className="block text-xs text-emerald-200 mb-1">4-Digit PIN / چار ہندسوں کا پن</label>
+            <label className="block text-xs text-white/90 mb-2">4-Digit PIN / چار ہندسوں کا پن</label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                 <Lock size={18} />
@@ -83,19 +82,18 @@ const Login = () => {
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full py-3 bg-white text-emerald-900 font-bold rounded-xl shadow-lg hover:bg-emerald-50 transition-all text-center border-2 border-emerald-400"
+              className="w-full pt-2 pb-3 bg-white text-[#03a527] hover:text-white hover:bg-[#03a527]/90 transition-all duration-300 ease-in-out font-bold rounded-xl shadow-lg text-center"
             >
-              Login / لاگ ان کریں
+              Login 
             </button>
           </div>
         </form>
 
         {/* Footer Link to Signup */}
-        <div className="text-center mt-4 text-xs text-emerald-200">
+        <div className=" text-center mt-4 text-xs text-white/80">
           Don't have an account?{' '}
-          <Link to="/signup" className="underline font-bold text-white hover:text-emerald-100">
-            Signup here / نیا اکاؤنٹ بنائیں
-          </Link>
+          <Link to="/signup" className="pl-2 underline font-bold text-white hover:text-white/90">
+            Signup here </Link>
         </div>
       </div>
     </div>
