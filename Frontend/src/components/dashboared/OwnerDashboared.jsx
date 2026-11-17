@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Store, Users, FileText, ArrowUpRight, ArrowDownLeft,
-  Plus, Search, LogOut, Wallet, LayoutDashboard, Globe,
-  Package, ShoppingCart, Barcode, Trash2, CheckCircle2, ShieldCheck
+import { 
+  Store, Users, FileText, ArrowUpRight, ArrowDownLeft, 
+  Plus, Search, LogOut, Wallet, LayoutDashboard, Globe, 
+  Package, ShoppingCart, Barcode, Trash2, CheckCircle2, ShieldCheck, BarChart3 
 } from 'lucide-react';
 
 const OwnerDashboared = () => {
@@ -48,7 +48,7 @@ const OwnerDashboared = () => {
   ]);
   const [newCustomer, setNewCustomer] = useState({ name: '', phone: '' });
 
-  // 4. Staff Management State (Strictly linked to currentShop.shopId)
+  // 4. Staff Management State
   const [staffList, setStaffList] = useState([
     {
       id: 1,
@@ -69,7 +69,6 @@ const OwnerDashboared = () => {
 
   // --- HANDLERS ---
 
-  // Manual Product Add Handler
   const handleAddProduct = (e) => {
     e.preventDefault();
     if (!newProduct.code || !newProduct.name || !newProduct.price || !newProduct.stock) return;
@@ -94,7 +93,6 @@ const OwnerDashboared = () => {
     setNewProduct({ code: '', name: '', unit: 'Piece', stock: '', price: '' });
   };
 
-  // Barcode / Item Code Se Direct Bill Mein Add Karna
   const handleScanOrAddCode = (e) => {
     e.preventDefault();
     if (!scanCode.trim()) return;
@@ -138,7 +136,6 @@ const OwnerDashboared = () => {
   const handleCompleteBill = () => {
     if (billCart.length === 0) return;
 
-    // Stock minus karein
     setProducts(
       products.map((prod) => {
         const billed = billCart.find((b) => b.id === prod.id);
@@ -146,7 +143,6 @@ const OwnerDashboared = () => {
       })
     );
 
-    // Agar Khata (Udhaar) par bill bana hai toh customer balance update karein
     if (paymentMode === 'khata' && selectedCustomerId !== 'walk-in') {
       setCustomers(
         customers.map((c) => {
@@ -169,7 +165,6 @@ const OwnerDashboared = () => {
     setBillCart([]);
   };
 
-  // Staff Add Handler (Linked to Grocery Hub)
   const handleAddStaff = (e) => {
     e.preventDefault();
     if (!newStaff.name || !newStaff.phone || !newStaff.pin) return;
@@ -188,7 +183,6 @@ const OwnerDashboared = () => {
     setNewStaff({ name: '', phone: '', role: 'Cashier', pin: '' });
   };
 
-  // Customer Add Handler
   const handleAddCustomer = (e) => {
     e.preventDefault();
     if (!newCustomer.name || !newCustomer.phone) return;
@@ -207,17 +201,15 @@ const OwnerDashboared = () => {
     setNewCustomer({ name: '', phone: '' });
   };
 
-  // Totals Calculation
   const totalGet = customers.filter((c) => c.type === 'get').reduce((s, c) => s + c.amount, 0);
   const totalGive = customers.filter((c) => c.type === 'give').reduce((s, c) => s + c.amount, 0);
   const netBalance = totalGet - totalGive;
 
   return (
     <div className="min-h-screen bg-gray-100 flex font-sans">
-      {/* 1. Desktop Sidebar (Fixed Left) */}
+      {/* 1. Desktop Sidebar */}
       <aside className="w-64 bg-gradient-to-t from-[#038317] to-[#03a527] text-white flex flex-col justify-between p-5 shadow-2xl shrink-0">
         <div>
-          {/* Logo & Active Shop Badge */}
           <div className="flex items-center gap-3 mb-5 px-2">
             <div className="w-10 h-10 bg-white text-[#038317] rounded-full flex items-center justify-center font-bold text-xl shadow">
               <Store size={22} />
@@ -230,7 +222,6 @@ const OwnerDashboared = () => {
             </div>
           </div>
 
-          {/* Isolated Business Card */}
           <div className="bg-white/15 border border-white/25 rounded-2xl p-3 mb-6 backdrop-blur-sm">
             <div className="flex items-center justify-between text-[11px] text-white/80">
               <span>ACTIVE SHOP</span>
@@ -246,7 +237,7 @@ const OwnerDashboared = () => {
           <nav className="space-y-2">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer ${
                 activeTab === 'overview' ? 'bg-white text-[#038317] shadow-md' : 'text-white/90 hover:bg-white/10'
               }`}
             >
@@ -256,7 +247,7 @@ const OwnerDashboared = () => {
 
             <button
               onClick={() => setActiveTab('billing')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer ${
                 activeTab === 'billing' ? 'bg-white text-[#038317] shadow-md' : 'text-white/90 hover:bg-white/10'
               }`}
             >
@@ -266,7 +257,7 @@ const OwnerDashboared = () => {
 
             <button
               onClick={() => setActiveTab('products')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer ${
                 activeTab === 'products' ? 'bg-white text-[#038317] shadow-md' : 'text-white/90 hover:bg-white/10'
               }`}
             >
@@ -276,7 +267,7 @@ const OwnerDashboared = () => {
 
             <button
               onClick={() => setActiveTab('khata')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer ${
                 activeTab === 'khata' ? 'bg-white text-[#038317] shadow-md' : 'text-white/90 hover:bg-white/10'
               }`}
             >
@@ -286,12 +277,21 @@ const OwnerDashboared = () => {
 
             <button
               onClick={() => setActiveTab('staff')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer ${
                 activeTab === 'staff' ? 'bg-white text-[#038317] shadow-md' : 'text-white/90 hover:bg-white/10'
               }`}
             >
               <Users size={18} />
               <span>Staff / <span className="noto-nastaliq-urdu text-xs">سٹاف</span></span>
+            </button>
+
+            {/* Reports Link */}
+            <button
+              onClick={() => navigate('/reports')}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-white/90 hover:bg-white/10 transition-all duration-200 cursor-pointer"
+            >
+              <BarChart3 size={18} />
+              <span>Reports / <span className="noto-nastaliq-urdu text-xs">رپورٹس</span></span>
             </button>
           </nav>
         </div>
@@ -309,7 +309,7 @@ const OwnerDashboared = () => {
           </div>
           <button
             onClick={() => navigate('/login')}
-            className="p-2 bg-white/10 hover:bg-red-500 rounded-xl transition-all duration-200 text-white"
+            className="p-2 bg-white/10 hover:bg-red-500 rounded-xl transition-all duration-200 text-white cursor-pointer"
             title="Logout"
           >
             <LogOut size={16} />
@@ -319,7 +319,6 @@ const OwnerDashboared = () => {
 
       {/* 2. Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        {/* Desktop Top Header Bar */}
         <header className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between shadow-sm sticky top-0 z-10">
           <div>
             <div className="flex items-center gap-2.5">
@@ -347,65 +346,62 @@ const OwnerDashboared = () => {
         {/* TAB CONTENT */}
         <div className="p-8 space-y-6 max-w-7xl mx-auto w-full">
           
-          {/* ==================== TAB 1: OVERVIEW ==================== */}
+          {/* ==================== OVERVIEW ==================== */}
           {activeTab === 'overview' && (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-t from-[#038317] to-[#03a527] rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs uppercase tracking-wider text-white/90 font-semibold">Net Khata Balance</span>
-                    <Wallet className="text-white/80" size={24} />
-                  </div>
-                  <div className="my-4">
-                    <h3 className="text-3xl font-extrabold">Rs. {netBalance.toLocaleString()}</h3>
-                    <p className="text-xs text-white/90 mt-1"><span className="noto-nastaliq-urdu">کل خالص بقایا جات</span></p>
-                  </div>
-                  <div className="text-[11px] bg-white/20 px-3 py-1 rounded-xl w-fit">
-                    {currentShop.shopName} ({currentShop.shopId})
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-t from-[#038317] to-[#03a527] rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs uppercase tracking-wider text-white/90 font-semibold">Net Khata Balance</span>
+                  <Wallet className="text-white/80" size={24} />
                 </div>
-
-                <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold">You'll Get (Lenay Hain)</span>
-                    <div className="p-2 bg-emerald-50 text-[#038317] rounded-xl"><ArrowUpRight size={20} /></div>
-                  </div>
-                  <div className="my-4">
-                    <h3 className="text-2xl font-bold text-[#038317]">Rs. {totalGet.toLocaleString()}</h3>
-                    <p className="text-xs text-gray-400 mt-1"><span className="noto-nastaliq-urdu">گاہکوں سے لینے ہیں</span></p>
-                  </div>
-                  <button onClick={() => setActiveTab('khata')} className="text-xs text-[#038317] font-bold text-left hover:underline">
-                    View Customer Khata &rarr;
-                  </button>
+                <div className="my-4">
+                  <h3 className="text-3xl font-extrabold">Rs. {netBalance.toLocaleString()}</h3>
+                  <p className="text-xs text-white/90 mt-1"><span className="noto-nastaliq-urdu">کل خالص بقایا جات</span></p>
                 </div>
-
-                <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Store Inventory & Staff</span>
-                    <div className="p-2 bg-emerald-50 text-[#038317] rounded-xl"><Package size={20} /></div>
-                  </div>
-                  <div className="my-4 flex gap-6">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800">{products.length}</h3>
-                      <p className="text-xs text-gray-500">Products</p>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800">{staffList.length}</h3>
-                      <p className="text-xs text-gray-500">Active Staff</p>
-                    </div>
-                  </div>
-                  <button onClick={() => setActiveTab('products')} className="text-xs text-[#038317] font-bold text-left hover:underline">
-                    Manage Products &rarr;
-                  </button>
+                <div className="text-[11px] bg-white/20 px-3 py-1 rounded-xl w-fit">
+                  {currentShop.shopName} ({currentShop.shopId})
                 </div>
               </div>
-            </>
+
+              <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold">You'll Get (Lenay Hain)</span>
+                  <div className="p-2 bg-emerald-50 text-[#038317] rounded-xl"><ArrowUpRight size={20} /></div>
+                </div>
+                <div className="my-4">
+                  <h3 className="text-2xl font-bold text-[#038317]">Rs. {totalGet.toLocaleString()}</h3>
+                  <p className="text-xs text-gray-400 mt-1"><span className="noto-nastaliq-urdu">گاہکوں سے لینے ہیں</span></p>
+                </div>
+                <button onClick={() => setActiveTab('khata')} className="text-xs text-[#038317] font-bold text-left hover:underline cursor-pointer">
+                  View Customer Khata &rarr;
+                </button>
+              </div>
+
+              <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Store Inventory & Staff</span>
+                  <div className="p-2 bg-emerald-50 text-[#038317] rounded-xl"><Package size={20} /></div>
+                </div>
+                <div className="my-4 flex gap-6">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-800">{products.length}</h3>
+                    <p className="text-xs text-gray-500">Products</p>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-800">{staffList.length}</h3>
+                    <p className="text-xs text-gray-500">Active Staff</p>
+                  </div>
+                </div>
+                <button onClick={() => setActiveTab('products')} className="text-xs text-[#038317] font-bold text-left hover:underline cursor-pointer">
+                  Manage Products &rarr;
+                </button>
+              </div>
+            </div>
           )}
 
-          {/* ==================== TAB 2: PRODUCTS & BARCODE SETUP ==================== */}
+          {/* ==================== PRODUCTS ==================== */}
           {activeTab === 'products' && (
             <div className="space-y-6">
-              {/* Manual Add Product Card */}
               <div className="bg-gradient-to-t from-[#038317] to-[#03a527] rounded-3xl p-6 text-white shadow-xl">
                 <div className="flex items-center justify-between mb-4">
                   <div>
@@ -499,7 +495,6 @@ const OwnerDashboared = () => {
                 </form>
               </div>
 
-              {/* Products Stock Table */}
               <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                   <h3 className="font-bold text-gray-800 text-base">
@@ -507,7 +502,7 @@ const OwnerDashboared = () => {
                   </h3>
                   <button
                     onClick={() => setActiveTab('billing')}
-                    className="px-3.5 py-1.5 bg-[#038317] text-white rounded-xl text-xs font-bold hover:bg-[#038317]/90 transition-all"
+                    className="px-3.5 py-1.5 bg-[#038317] text-white rounded-xl text-xs font-bold hover:bg-[#038317]/90 transition-all cursor-pointer"
                   >
                     Go to Barcode Billing &rarr;
                   </button>
@@ -545,7 +540,7 @@ const OwnerDashboared = () => {
                         <td className="py-3.5 px-6 text-right">
                           <button
                             onClick={() => setProducts(products.filter((p) => p.id !== prod.id))}
-                            className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                            className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
                             title="Delete Product"
                           >
                             <Trash2 size={16} />
@@ -559,10 +554,9 @@ const OwnerDashboared = () => {
             </div>
           )}
 
-          {/* ==================== TAB 3: FAST BARCODE POS BILLING ==================== */}
+          {/* ==================== BILLING ==================== */}
           {activeTab === 'billing' && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Left: Barcode Scanner Input & Quick Item Picker */}
               <div className="lg:col-span-2 space-y-4">
                 <div className="bg-gradient-to-t from-[#038317] to-[#03a527] rounded-3xl p-6 text-white shadow-xl">
                   <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
@@ -570,7 +564,7 @@ const OwnerDashboared = () => {
                     Scan Barcode or Enter Item Code
                   </h3>
                   <p className="text-xs text-white/85 mb-4">
-                    Code likh kar Enter dabayein (jaise <span className="font-mono bg-white/20 px-1.5 rounded">1001</span> ya <span className="font-mono bg-white/20 px-1.5 rounded">1002</span>) — product khud bill mein add ho jayegi.
+                    Code likh kar Enter dabayein (jaise <span className="font-mono bg-white/20 px-1.5 rounded">1001</span>) — product khud bill mein add ho jayegi.
                   </p>
                   <form onSubmit={handleScanOrAddCode} className="flex gap-3">
                     <input
@@ -590,7 +584,6 @@ const OwnerDashboared = () => {
                   </form>
                 </div>
 
-                {/* Quick Click Products Grid */}
                 <div className="bg-white rounded-3xl p-5 border border-gray-200 shadow-sm">
                   <h4 className="font-bold text-gray-800 text-sm mb-3">Quick Tap Products (Click to Add)</h4>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -613,7 +606,6 @@ const OwnerDashboared = () => {
                 </div>
               </div>
 
-              {/* Right: Live Customer Bill Receipt */}
               <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-lg flex flex-col justify-between">
                 <div>
                   <div className="border-b border-dashed border-gray-300 pb-3 mb-4">
@@ -621,7 +613,6 @@ const OwnerDashboared = () => {
                     <p className="text-xs text-gray-500">Customer Invoice / <span className="noto-nastaliq-urdu">بل رسید</span></p>
                   </div>
 
-                  {/* Select Customer & Payment Type */}
                   <div className="space-y-3 mb-4">
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 mb-1">Customer</label>
@@ -641,7 +632,7 @@ const OwnerDashboared = () => {
                       <button
                         type="button"
                         onClick={() => setPaymentMode('cash')}
-                        className={`py-2 rounded-xl text-xs font-bold border ${
+                        className={`py-2 rounded-xl text-xs font-bold border cursor-pointer ${
                           paymentMode === 'cash' ? 'bg-[#038317] text-white border-[#038317]' : 'bg-gray-50 text-gray-600 border-gray-200'
                         }`}
                       >
@@ -650,7 +641,7 @@ const OwnerDashboared = () => {
                       <button
                         type="button"
                         onClick={() => setPaymentMode('khata')}
-                        className={`py-2 rounded-xl text-xs font-bold border ${
+                        className={`py-2 rounded-xl text-xs font-bold border cursor-pointer ${
                           paymentMode === 'khata' ? 'bg-red-600 text-white border-red-600' : 'bg-gray-50 text-gray-600 border-gray-200'
                         }`}
                       >
@@ -659,7 +650,6 @@ const OwnerDashboared = () => {
                     </div>
                   </div>
 
-                  {/* Billed Items List */}
                   <div className="space-y-2 max-h-60 overflow-y-auto border-t border-gray-100 pt-3">
                     {billCart.length === 0 ? (
                       <p className="text-xs text-gray-400 text-center py-8">No items scanned yet.</p>
@@ -671,9 +661,9 @@ const OwnerDashboared = () => {
                             <p className="text-xs text-gray-500">Rs. {item.price} x {item.qty}</p>
                           </div>
                           <div className="flex items-center gap-2">
-                            <button onClick={() => updateBillQty(item.id, -1)} className="w-6 h-6 bg-white border rounded-lg font-bold">-</button>
+                            <button onClick={() => updateBillQty(item.id, -1)} className="w-6 h-6 bg-white border rounded font-bold text-xs cursor-pointer">-</button>
                             <span className="font-bold text-xs">{item.qty}</span>
-                            <button onClick={() => updateBillQty(item.id, 1)} className="w-6 h-6 bg-white border rounded-lg font-bold">+</button>
+                            <button onClick={() => updateBillQty(item.id, 1)} className="w-6 h-6 bg-white border rounded font-bold text-xs cursor-pointer">+</button>
                           </div>
                         </div>
                       ))
@@ -681,93 +671,83 @@ const OwnerDashboared = () => {
                   </div>
                 </div>
 
-                {/* Bill Total & Save */}
                 <div className="border-t border-gray-200 pt-4 mt-4">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="font-bold text-gray-600">Grand Total:</span>
-                    <span className="text-2xl font-extrabold text-[#038317]">Rs. {billTotal.toLocaleString()}</span>
+                    <span className="font-bold text-gray-600 text-sm">Grand Total:</span>
+                    <span className="text-xl font-extrabold text-[#038317]">Rs. {billTotal.toLocaleString()}</span>
                   </div>
                   <button
                     type="button"
                     onClick={handleCompleteBill}
-                    className="w-full py-3 bg-gradient-to-t from-[#038317] to-[#03a527] text-white font-bold rounded-xl shadow-lg hover:opacity-95 transition-all cursor-pointer"
+                    className="w-full py-3 bg-gradient-to-t from-[#038317] to-[#03a527] text-white font-bold rounded-xl shadow-lg hover:opacity-95 transition-all cursor-pointer text-sm"
                   >
-                    Save & Print Bill / <span className="noto-nastaliq-urdu text-xs font-normal">بل محفوظ کریں</span>
+                    Complete & Save Bill
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ==================== TAB 4: CUSTOMERS KHATA ==================== */}
+          {/* ==================== CUSTOMERS KHATA ==================== */}
           {activeTab === 'khata' && (
             <div className="space-y-6">
-              {/* Add Customer Form */}
-              <form onSubmit={handleAddCustomer} className="bg-white p-5 rounded-3xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-3 items-end">
-                <div className="flex-1 w-full">
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Customer Name / گاہک کا نام</label>
+              <div className="bg-gradient-to-t from-[#038317] to-[#03a527] rounded-3xl p-6 text-white shadow-xl">
+                <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
+                  <Users size={20} />
+                  Add Customer / <span className="noto-nastaliq-urdu text-sm font-normal">نیا گاہک رجسٹر کریں</span>
+                </h3>
+                <form onSubmit={handleAddCustomer} className="flex flex-col md:flex-row gap-3 mt-4">
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Tariq Mahmood"
+                    placeholder="Customer Name (e.g. Rashid Khan)"
                     value={newCustomer.name}
                     onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#038317]"
+                    className="flex-1 px-4 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none"
                   />
-                </div>
-                <div className="flex-1 w-full">
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Mobile Number / موبائل نمبر</label>
                   <input
                     type="tel"
                     required
-                    placeholder="03XXXXXXXXX"
+                    placeholder="Mobile Number (03XXXXXXXXX)"
                     value={newCustomer.phone}
                     onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#038317]"
+                    className="flex-1 px-4 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none"
                   />
-                </div>
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 bg-[#038317] text-white font-bold rounded-xl text-sm hover:bg-[#038317]/90 transition-all flex items-center gap-2 shrink-0 cursor-pointer"
-                >
-                  <Plus size={16} /> Add Customer
-                </button>
-              </form>
+                  <button type="submit" className="px-6 py-2.5 bg-white text-[#038317] font-bold rounded-xl shadow cursor-pointer hover:bg-emerald-50">
+                    + Register Customer
+                  </button>
+                </form>
+              </div>
 
-              {/* Customer Khata Table */}
               <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                  <h3 className="font-bold text-gray-800 text-base">
-                    {currentShop.shopName} — Customers Khata
-                  </h3>
+                <div className="px-6 py-4 border-b border-gray-200">
+                  <h3 className="font-bold text-gray-800 text-base">Customer Khata Ledger ({customers.length})</h3>
                 </div>
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200">
                       <th className="py-3 px-6">Customer Name</th>
-                      <th className="py-3 px-6">Phone Number</th>
-                      <th className="py-3 px-6">Last Updated</th>
-                      <th className="py-3 px-6">Balance Status</th>
+                      <th className="py-3 px-6">Mobile Number</th>
+                      <th className="py-3 px-6">Last Activity</th>
+                      <th className="py-3 px-6">Khata Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-sm">
-                    {customers.map((cust) => (
-                      <tr key={cust.id} className="hover:bg-gray-50">
-                        <td className="py-4 px-6 font-bold text-gray-800">{cust.name}</td>
-                        <td className="py-4 px-6 text-gray-600">{cust.phone}</td>
-                        <td className="py-4 px-6 text-gray-500 text-xs">{cust.date}</td>
-                        <td className="py-4 px-6">
-                          {cust.type === 'give' && (
-                            <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600">
-                              You'll Give: Rs. {cust.amount.toLocaleString()}
-                            </span>
-                          )}
-                          {cust.type === 'get' && (
+                    {customers.map((c) => (
+                      <tr key={c.id} className="hover:bg-gray-50">
+                        <td className="py-3.5 px-6 font-bold text-gray-800">{c.name}</td>
+                        <td className="py-3.5 px-6 text-gray-600">{c.phone}</td>
+                        <td className="py-3.5 px-6 text-gray-500 text-xs">{c.date}</td>
+                        <td className="py-3.5 px-6">
+                          {c.type === 'get' ? (
                             <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-[#038317]">
-                              You'll Get: Rs. {cust.amount.toLocaleString()}
+                              You'll Get: Rs. {c.amount.toLocaleString()}
                             </span>
-                          )}
-                          {cust.type === 'settled' && (
+                          ) : c.type === 'give' ? (
+                            <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600">
+                              You'll Give: Rs. {c.amount.toLocaleString()}
+                            </span>
+                          ) : (
                             <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-500">
                               Settled / حساب برابر
                             </span>
@@ -781,127 +761,72 @@ const OwnerDashboared = () => {
             </div>
           )}
 
-          {/* ==================== TAB 5: ISOLATED STAFF MANAGEMENT ==================== */}
+          {/* ==================== STAFF MANAGEMENT ==================== */}
           {activeTab === 'staff' && (
             <div className="space-y-6">
-              {/* Add Staff Card (Strictly Bound to currentShop) */}
               <div className="bg-gradient-to-t from-[#038317] to-[#03a527] rounded-3xl p-6 text-white shadow-xl">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold flex items-center gap-2">
-                      <ShieldCheck size={22} />
-                      Add Staff Member for "{currentShop.shopName}"
-                    </h3>
-                    <p className="text-xs text-white/85">
-                      Har staff member sirf apni assigned dukan ({currentShop.shopId}) ke sath link hoga — doosri dukano ka data mix nahi hoga.
-                    </p>
-                  </div>
-                  <span className="bg-white text-[#038317] text-xs font-bold px-3 py-1 rounded-full">
-                    Business: {currentShop.shopName}
-                  </span>
-                </div>
-
-                <form onSubmit={handleAddStaff} className="grid grid-cols-1 md:grid-cols-5 gap-3">
-                  <div>
-                    <label className="block text-xs text-white/90 mb-1">Staff Name *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Bilal Raza"
-                      value={newStaff.name}
-                      onChange={(e) => setNewStaff({ ...newStaff, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-white/90 mb-1">Mobile Number (Login ID) *</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="03XXXXXXXXX"
-                      value={newStaff.phone}
-                      onChange={(e) => setNewStaff({ ...newStaff, phone: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-white/90 mb-1">Assign Role *</label>
-                    <select
-                      value={newStaff.role}
-                      onChange={(e) => setNewStaff({ ...newStaff, role: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none font-semibold"
-                    >
-                      <option value="Cashier">Cashier (بلنگ)</option>
-                      <option value="Salesman">Salesman (سیلز مین)</option>
-                      <option value="Store Manager">Store Manager (مینیجر)</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-white/90 mb-1">4-Digit Login PIN *</label>
-                    <input
-                      type="password"
-                      maxLength="4"
-                      required
-                      placeholder="****"
-                      value={newStaff.pin}
-                      onChange={(e) => setNewStaff({ ...newStaff, pin: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white text-gray-800 rounded-xl text-sm text-center tracking-widest font-bold focus:outline-none"
-                    />
-                  </div>
-
-                  <div className="flex items-end">
-                    <button
-                      type="submit"
-                      className="w-full py-2.5 bg-white text-[#038317] hover:bg-emerald-50 font-bold rounded-xl shadow-md transition-all cursor-pointer"
-                    >
-                      + Assign Staff
-                    </button>
-                  </div>
+                <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
+                  <ShieldCheck size={20} />
+                  Add Cashier / Staff Member (Isolated to {currentShop.shopName})
+                </h3>
+                <form onSubmit={handleAddStaff} className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-4">
+                  <input
+                    type="text"
+                    required
+                    placeholder="Staff Name (e.g. Zain Abbas)"
+                    value={newStaff.name}
+                    onChange={(e) => setNewStaff({ ...newStaff, name: e.target.value })}
+                    className="px-4 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none"
+                  />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Phone (03XXXXXXXXX)"
+                    value={newStaff.phone}
+                    onChange={(e) => setNewStaff({ ...newStaff, phone: e.target.value })}
+                    className="px-4 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none"
+                  />
+                  <input
+                    type="password"
+                    required
+                    maxLength="4"
+                    placeholder="4-Digit PIN Code (e.g. 1234)"
+                    value={newStaff.pin}
+                    onChange={(e) => setNewStaff({ ...newStaff, pin: e.target.value })}
+                    className="px-4 py-2.5 bg-white text-gray-800 rounded-xl text-sm focus:outline-none font-mono"
+                  />
+                  <button type="submit" className="px-6 py-2.5 bg-white text-[#038317] font-bold rounded-xl shadow cursor-pointer hover:bg-emerald-50">
+                    + Add Staff
+                  </button>
                 </form>
               </div>
 
-              {/* Staff List Table */}
               <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                  <h3 className="font-bold text-gray-800 text-base">
-                    Assigned Staff — {currentShop.shopName} ({currentShop.shopId})
-                  </h3>
+                <div className="px-6 py-4 border-b border-gray-200">
+                  <h3 className="font-bold text-gray-800 text-base">Assigned Staff List ({staffList.length})</h3>
                 </div>
-
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200">
-                      <th className="py-3 px-6">Staff Name</th>
-                      <th className="py-3 px-6">Assigned Business</th>
+                      <th className="py-3 px-6">Name</th>
                       <th className="py-3 px-6">Role</th>
-                      <th className="py-3 px-6">Login Mobile</th>
-                      <th className="py-3 px-6">PIN</th>
-                      <th className="py-3 px-6 text-right">Remove</th>
+                      <th className="py-3 px-6">Phone</th>
+                      <th className="py-3 px-6">Shop ID</th>
+                      <th className="py-3 px-6 text-right">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-sm">
                     {staffList.map((st) => (
                       <tr key={st.id} className="hover:bg-gray-50">
-                        <td className="py-4 px-6 font-bold text-gray-800">{st.name}</td>
-                        <td className="py-4 px-6">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-[#038317] border border-[#038317]/20">
-                            <CheckCircle2 size={13} /> {st.shopName} ({st.shopId})
-                          </span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-700">
-                            {st.role}
-                          </span>
-                        </td>
-                        <td className="py-4 px-6 text-gray-600">{st.phone}</td>
-                        <td className="py-4 px-6 font-mono text-gray-500">****</td>
-                        <td className="py-4 px-6 text-right">
+                        <td className="py-3.5 px-6 font-bold text-gray-800">{st.name}</td>
+                        <td className="py-3.5 px-6"><span className="px-2 py-1 bg-emerald-50 text-[#038317] font-bold text-xs rounded-full">{st.role}</span></td>
+                        <td className="py-3.5 px-6 text-gray-600">{st.phone}</td>
+                        <td className="py-3.5 px-6 font-mono text-xs font-bold text-[#038317]">{st.shopId}</td>
+                        <td className="py-3.5 px-6 text-right">
                           <button
-                            onClick={() => setStaffList(staffList.filter((item) => item.id !== st.id))}
-                            className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg"
+                            onClick={() => setStaffList(staffList.filter((s) => s.id !== st.id))}
+                            className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                            title="Remove Staff"
                           >
                             <Trash2 size={16} />
                           </button>

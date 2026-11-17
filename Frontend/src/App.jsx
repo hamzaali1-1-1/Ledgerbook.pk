@@ -5,6 +5,8 @@ import Login from './pages/auth/Login';
 import OwnerDashboard from './components/dashboared/OwnerDashboared';
 import CustomerDashboard from './components/dashboared/CustomerDashboared';
 import StaffDashboared from './components/dashboared/StaffDashboared';
+import Reports from './components/ledger/Reports';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/owner" element={<OwnerDashboard />} />
         <Route path="/customer" element={<CustomerDashboard />} />
         <Route path="/staff" element={<StaffDashboared />} />
+        <Route path="/home" element = {<Home />} />
+        <Route path="/reports" element = {<Reports />} />
       </Routes>
     </Router>
   );
